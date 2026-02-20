@@ -1,0 +1,368 @@
+:root {
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --success: #10b981;
+    --danger: #ef4444;
+    --secondary: #64748b;
+    --glass: rgba(255, 255, 255, 0.95);
+    --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    --radius: 16px;
+    --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    direction: rtl;
+    color: #1e293b;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.app {
+    width: 100%;
+    max-width: 900px;
+}
+
+.container {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border-radius: var(--radius);
+    padding: 40px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+h1 {
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 2rem;
+    background: linear-gradient(to right, #4f46e5, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Input Styling */
+.input-group {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+input {
+    width: 100%;
+    max-width: 450px;
+    padding: 14px 20px;
+    font-size: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.2s;
+    text-align: right;
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* Camera Section */
+.camera-container {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    background: #000;
+    margin-bottom: 2rem;
+}
+
+.webcam {
+    width: 100%;
+    display: block;
+}
+
+.countdown {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8rem;
+    color: white;
+    font-weight: 900;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    z-index: 10;
+    animation: pulse 1s infinite;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 28px;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn:active {
+    transform: scale(0.95);
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    color: white;
+}
+
+/* Gallery */
+.gallery-section {
+    margin-top: 3rem;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 2rem;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+    margin-top: 1.5rem;
+}
+
+.gallery-item {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+.gallery-number {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    background: var(--primary);
+    color: white;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Instructions */
+.instructions {
+    margin-top: 2rem;
+    padding: 20px;
+    background: #f1f5f9;
+    border-radius: 12px;
+    font-size: 0.9rem;
+}
+
+.instructions h3 {
+    margin-bottom: 10px;
+    color: var(--primary);
+}
+
+.instructions ol {
+    padding-right: 20px;
+    color: #475569;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* تنسيق الزر العريض في الأسفل */
+.footer-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    border-top: 1px dashed #ccc;
+    padding-top: 20px;
+}
+
+.btn-full {
+    width: 100%;
+    max-width: 400px;
+    padding: 15px;
+    background-color: #64748b;
+    /* لون رمادي احترافي */
+}
+
+.btn-full:hover {
+    background-color: #475569;
+}
+
+.overlay-instruction {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+    color: white;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.stage-label {
+    font-size: 1.8rem;
+    font-weight: bold;
+    background: #6366f1;
+    padding: 10px 25px;
+    border-radius: 50px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.countdown-timer {
+    font-size: 5rem;
+    font-weight: 900;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+}
+
+.gallery-tag {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 10px;
+    padding: 2px;
+    text-align: center;
+}
+
+/* حاوية القالب */
+.face-guide-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 4;
+    pointer-events: none;
+    /* لكي لا يحجب الضغط على الأزرار */
+}
+
+.face-svg {
+    width: 80%;
+    /* حجم القالب بالنسبة للكاميرا */
+    max-width: 400px;
+}
+
+/* خطوط القالب */
+.guide-outline {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.6);
+    stroke-width: 4;
+    stroke-dasharray: 10, 5;
+    /* خط متقطع */
+    animation: breathe 2s infinite ease-in-out;
+}
+
+.guide-feature {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.4);
+    stroke-width: 3;
+}
+
+/* حركة الملامح عند التغيير */
+.features-group {
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* تأثير النبض الخفيف للقالب */
+@keyframes breathe {
+
+    0%,
+    100% {
+        stroke: rgba(255, 255, 255, 0.6);
+        stroke-width: 4;
+    }
+
+    50% {
+        stroke: rgba(99, 102, 241, 0.8);
+        stroke-width: 5;
+    }
+
+    /* يتغير للون الأزرق قليلاً */
+}
+
+/* تعديل نص التعليمات ليكون في الأسفل لكي لا يغطي الوجه */
+.overlay-instruction {
+    position: absolute;
+    bottom: 20px;
+    /* نزلنا النص للأسفل */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+}
+
+.stage-label {
+    background: rgba(0, 0, 0, 0.7) !important;
+    font-size: 1.2rem !important;
+    padding: 8px 20px !important;
+}
