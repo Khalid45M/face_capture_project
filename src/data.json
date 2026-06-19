@@ -1,0 +1,16 @@
+{
+  "mockUsersDatabase": [
+    { "nationalId": "28505051234567", "password": "456", "role": "doctor", "firstName": "Mahmoud", "secondName": "Ayman", "lastName": "Hussein", "department": "AI Department" },
+    { "nationalId": "27912121234567", "password": "789", "role": "doctor", "firstName": "Rana", "secondName": "Ahmed", "lastName": "Ezzat", "department": "Bio Department" },
+    
+    { "nationalId": "30501011234567", "password": "123", "role": "student", "firstName": "Khaled", "secondName": "Mohamed", "lastName": "Mustafa", "academicYear": "Four", "track": "General" },
+    { "nationalId": "30602021234567", "password": "123", "role": "student", "firstName": "Youssef", "secondName": "Hany", "lastName": "Kamal", "academicYear": "Three", "track": "General" },
+    { "nationalId": "30703031234567", "password": "123", "role": "student", "firstName": "Karim", "secondName": "Amr", "lastName": "Waleed", "academicYear": "Two", "track": "General" },
+    { "nationalId": "30804041234567", "password": "123", "role": "student", "firstName": "Ziad", "secondName": "Ehab", "lastName": "Hassan", "academicYear": "One", "track": "General" },
+    
+    { "nationalId": "30505051234567", "password": "123", "role": "student", "firstName": "Aya", "secondName": "Ibrahim", "lastName": "Nabil", "academicYear": "Four", "track": "Bio" },
+    { "nationalId": "30606061234567", "password": "123", "role": "student", "firstName": "Sara", "secondName": "Ali", "contentFetchId": null, "lastName": "Mansour", "academicYear": "Three", "track": "Bio" },
+    { "nationalId": "30707071234567", "password": "123", "role": "student", "firstName": "Norhan", "secondName": "Eslam", "lastName": "Fady", "academicYear": "Two", "track": "Bio" },
+    { "nationalId": "30808081234567", "password": "123", "role": "student", "firstName": "Menna", "secondName": "Tarek", "lastName": "Saeed", "academicYear": "One", "track": "Bio" }
+  ]
+}
