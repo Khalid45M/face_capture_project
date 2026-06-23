@@ -1,28 +1,30 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Webcam from 'react-webcam';
 import * as tf from '@tensorflow/tfjs';
 import * as blazeface from '@tensorflow-models/blazeface';
 import './App.css';
 
-// =========================================================================
-// 1. CONSTANTS & ASSETS
-// =========================================================================
-import teamImage from './Im1.jpeg';
-import logoOne from './logo.jpg';
-import logoTwo from './logo2.jpg';
+// استيراد المكونات الفرعية المقسمة
+import Header from './components/Header';
+import LoginForm from './components/LoginForm';
+import DashboardInfo from './components/DashboardInfo';
+import CameraView from './components/CameraView';
+import ImageGallery from './components/ImageGallery';
+
+// 🌟 1. استيراد ملف data.json المخصص للتحقق من تسجيل الدخول (طلاب ودكاترة)
+import { mockUsersDatabase } from './data.json';
+
+// 🌟 2. استيراد ملف students.json المخصص للعرض في لوحة إحصائيات الدكتور
+import { mockStudentsDatabase } from './students.json';
 
 const CLOUD_NAME = "dqcv48dd1";
 const UPLOAD_PRESET = "new_upload";
 
-import { mockUsersDatabase } from './data.json';
-
 function App() {
   // =========================================================================
-  // 2. STATE MANAGEMENT
+  // STATE MANAGEMENT
   // =========================================================================
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-
   const [loginNationalId, setLoginNationalId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
 
@@ -31,6 +33,13 @@ function App() {
   const [lastName, setLastName] = useState('');
   const [academicYear, setAcademicYear] = useState('One');
   const [track, setTrack] = useState('General');
+
+  // التحكم في ظهور لوحة التحكم الخاصة بالدكتور (التبويب الجانبي)
+  const [showDoctorPanel, setShowDoctorPanel] = useState(false);
+
+  // 🌟 حالات الفلاتر الجديدة للوحة تحكم الدكتور
+  const [filterYear, setFilterYear] = useState('All');
+  const [filterTrack, setFilterTrack] = useState('All');
 
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [capturedImages, setCapturedImages] = useState([]);
@@ -58,7 +67,7 @@ function App() {
   ];
 
   // =========================================================================
-  // 3. AI MODEL INITIALIZATION
+  // AI MODEL INITIALIZATION
   // =========================================================================
   useEffect(() => {
     async function loadModel() {
@@ -86,7 +95,7 @@ function App() {
   };
 
   // =========================================================================
-  // 4. AUTHENTICATION LOGIC
+  // AUTHENTICATION LOGIC
   // =========================================================================
   const handleLogin = (e) => {
     e.preventDefault();
@@ -94,9 +103,11 @@ function App() {
       alert("الرجاء إدخال رقم قومي صحيح مكون من 14 رقماً!");
       return;
     }
+    
     const userFound = mockUsersDatabase.find(
       user => user.nationalId === loginNationalId && user.password === loginPassword
     );
+
     if (userFound) {
       setCurrentUser(userFound);
       setIsLoggedIn(true);
@@ -107,6 +118,8 @@ function App() {
         setAcademicYear(userFound.academicYear);
         setTrack(userFound.track || 'General');
       }
+      setLoginNationalId('');
+      setLoginPassword('');
     } else {
       alert("❌ خطأ في الرقم القومي أو كلمة المرور!");
     }
@@ -123,6 +136,9 @@ function App() {
     setWarningMessage('');
     setCurrentStage('');
     setCurrentStageLabel('');
+    setShowDoctorPanel(false);
+    setFilterYear('All');
+    setFilterTrack('All');
     setGalleryEvaluation({ passed: true, score: 0, msg: '' });
   };
 
@@ -146,9 +162,8 @@ function App() {
   };
 
   // =========================================================================
-  // 5. CAPTURE LOOP WITH VISUAL DIRECTION STAGE GUIDES
+  // CAPTURE LOOP WITH CORE STATE MACHINE
   // =========================================================================
-
   const startCaptureSequence = async () => {
     setIsCapturing(true);
     setWarningMessage('');
@@ -159,19 +174,15 @@ function App() {
     for (let stage of stages) {
       setCurrentStage(stage.arabic);
       setCurrentStageLabel(stage.label);
-
       let completedFramesForStage = 0;
 
-      // حلقة تضمن التقاط 10 إطارات سليمة للوضعية الحالية
       while (completedFramesForStage < stage.count) {
-
-        // 1. تشغيل العَد التنازلي (3 ثوانٍ) قبل بدء التصوير أو بعد العودة من التحذير
         for (let c = 3; c > 0; c--) {
           setCountdown(c);
           const isFacePresent = await checkFaceInFrame();
           if (!isFacePresent) {
             setWarningMessage('⚠️ تنبيه: يرجى توجيه وجهك أمام الكاميرا بوضوح للمتابعة!');
-            c = 4; // إعادة تثبيت العداد عند 3 ثوانٍ طالما الوجه غير موجود
+            c = 4;
           } else {
             setWarningMessage('');
           }
@@ -179,24 +190,19 @@ function App() {
         }
         setCountdown(0);
 
-        // 2. محاولة التقاط الإطارات المتبقية للوضعية الحالية
         let faceInterrupted = false;
 
         for (let i = completedFramesForStage; i < stage.count; i++) {
           const isFacePresent = await checkFaceInFrame();
 
           if (!isFacePresent) {
-            // حدوث مشكلة: إظهار التحذير فوراً، رفع الاسكور، وتفعيل علم المقاطعة
             setWarningMessage('❌ توقف التصوير! يرجى إبقاء وجهك ثابتاً، سيعاد العد التنازلي للاستعداد...');
             failedAttempts++;
             faceInterrupted = true;
-
-            // إعطاء المتصفح 800ms ليرسم التحذير بوضوح على الشاشة قبل أي شيء
             await new Promise(resolve => setTimeout(resolve, 800));
-            break; // الخروج من حلقة التقاط الصور الحالية للعودة للعد التنازلي
+            break;
           }
 
-          // إذا كان الوضع سليماً، يتم مسح أي تحذير والتقاط الإطار
           setWarningMessage('');
           if (webcamRef.current) {
             const imageSrc = webcamRef.current.getScreenshot();
@@ -207,16 +213,13 @@ function App() {
                 arabicLabel: stage.arabic.replace(/[🟢◀️▶️🔼🔽]\s/, '')
               });
               setCapturedImages([...allTriggeredImages]);
-              completedFramesForStage++; // زيادة عدد الإطارات الناجحة
+              completedFramesForStage++;
             }
           }
-          // مسافة أمان صغيرة بين اللقطات المتتالية الناجحة
           await new Promise(resolve => setTimeout(resolve, 250));
         }
 
-        // إذا تم مقاطعة الجلسة بسبب اختفاء الوجه، نترك الحلقة تعيد نفسها (وبالتالي سيعيد الـ Countdown)
         if (faceInterrupted) {
-          // دقيقة انتظار إضافية للتأكد من استيعاب المستخدم قبل بدء الـ 3 ثوانٍ الجديدة
           await new Promise(resolve => setTimeout(resolve, 1000));
         }
       }
@@ -243,7 +246,7 @@ function App() {
   };
 
   // =========================================================================
-  // 6. CLOUD SYNCHRONIZATION LOGIC
+  // CLOUD SYNCHRONIZATION LOGIC
   // =========================================================================
   const uploadToCloudinary = async () => {
     if (!galleryEvaluation.passed) {
@@ -280,180 +283,163 @@ function App() {
     alert("✨ تم رفع مجموعة البيانات البيومترية كاملة بنجاح!");
   };
 
+  // =========================================================================
+  // FILTER LOGIC FOR DR PANEL
+  // =========================================================================
+  const filteredStudents = mockStudentsDatabase.filter(student => {
+    const matchYear = filterYear === 'All' || student.academicYear === filterYear;
+    const matchTrack = filterTrack === 'All' || student.track === filterTrack;
+    return matchYear && matchTrack;
+  });
+
+  // =========================================================================
+  // RENDER INTERFACE
+  // =========================================================================
   return (
     <div className="app">
       <div className="container">
-
-        <div className="header-branding">
-          <img src={logoOne} alt="Faculty Logo" className="brand-logo" />
-          <div className="title-area">
-            <h1>The Gate Know</h1>
-            <p>نظام تسجيل القياسات الحيوية للطلاب والموظفين</p>
-          </div>
-          <img src={logoTwo} alt="Project Logo" className="brand-logo-two" />
-        </div>
+        
+        <Header />
 
         {!isLoggedIn ? (
-          <div className="login-card-wrapper">
-            <h3>🔒 تسجيل الدخول</h3>
-            <form onSubmit={handleLogin} className="login-form">
-              <div className="field-block">
-                <label>الرقم القومي (14 رقم)</label>
-                <input
-                  type="text"
-                  maxLength="14"
-                  value={loginNationalId}
-                  onChange={e => setLoginNationalId(e.target.value.replace(/\D/g, ''))}
-                  placeholder="أدخل الـ 14 رقم بالكامل"
-                  required
-                />
-              </div>
-              <div className="field-block">
-                <label>كلمة المرور</label>
-                <input
-                  type="password"
-                  value={loginPassword}
-                  onChange={e => setLoginPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                />
-              </div>
-              <button type="submit" className="btn btn-primary btn-full">تحقق ودخول للنظام</button>
-            </form>
-          </div>
+          <LoginForm 
+            loginNationalId={loginNationalId}
+            setLoginNationalId={setLoginNationalId}
+            loginPassword={loginPassword}
+            setLoginPassword={setLoginPassword}
+            handleLogin={handleLogin}
+          />
         ) : (
           <>
-            <div className="registration-form-section">
-              <div className="form-title-row">
-                <h3>✍️ لوحة البيانات الشخصية [مرحلة إعداد عينات الوجه]</h3>
-                <div className="user-badge-info">
-                  <span className="role-tag">{currentUser?.role === 'doctor' ? '👨‍🏫 دكتور' : '🎓 طالب'}</span>
-                  <button onClick={handleLogout} className="btn-logout">تسجيل الخروج</button>
-                </div>
-              </div>
-              <div className="input-grid">
-                <div className="field-block">
-                  <label>الاسم الأول</label>
-                  <input type="text" value={firstName} placeholder="الاسم الأول" disabled={true} />
-                </div>
-                <div className="field-block">
-                  <label>الاسم الثاني</label>
-                  <input type="text" value={secondName} placeholder="الاسم الثاني" disabled={true} />
-                </div>
-                <div className="field-block">
-                  <label>اسم العائلة</label>
-                  <input type="text" value={lastName} placeholder="اسم العائلة" disabled={true} />
-                </div>
-                {currentUser?.role === 'student' && (
-                  <>
-                    <div className="field-block">
-                      <label>السنة الدراسية</label>
-                      <select value={academicYear} disabled={true}>
-                        <option value="One">الفرقة الأولى (First Year)</option>
-                        <option value="Two">الفرقة الثانية (Second Year)</option>
-                        <option value="Three">الفرقة الثالثة (Third Year)</option>
-                        <option value="Four">الفرقة الرابعة (Fourth Year)</option>
-                      </select>
-                    </div>
-                    <div className="field-block">
-                      <label>المسار الأكاديمي (Track)</label>
-                      <select value={track} disabled={true}>
-                        <option value="General">عام (General)</option>
-                        <option value="Bio">بايو (Bioinformatics)</option>
-                      </select>
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-
-            <div className="camera-view-tier">
-              {modelLoading ? (
-                <div className="camera-placeholder-card">
-                  <p style={{ color: '#fff' }}>🔄 جاري تحميل وتجهيز نموذج تتبع ملامح الوجه الذكي...</p>
-                </div>
-              ) : isCameraActive ? (
-                <div className="live-camera-card">
-                  <div className="webcam-viewport-wrapper">
-                    <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" className="webcam-render" />
-
-                    {/* طبقة الإرشاد البصري التوجيهي الكبير للمسخدم */}
-                    {isCapturing && currentStage && (
-                      <div className="visual-stage-instruction-overlay">
-                        <div className="instruction-badge">{currentStage}</div>
-                      </div>
-                    )}
-
-                    {countdown > 0 && <div className="visual-countdown-overlay">{countdown}</div>}
-
-                    {/* التنبيه العائم المطور والموسط */}
-                    {warningMessage && (
-                      <div className="realtime-warning-banner">
-                        {warningMessage}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="camera-controls-status-bar">
-                    <p className="stage-alert-text">الوضعية الحالية: <span className="stage-highlight-text">{currentStage || "جاهز للبدء"}</span></p>
-                    <div className="action-buttons-row">
-                      <button onClick={startCaptureSequence} className="btn btn-primary" disabled={isCapturing}>
-                        {isCapturing ? "📸 جاري تصوير زوايا الوجه..." : "🎬 ابدأ التقاط الـ 50 إطار"}
-                      </button>
-                      <button onClick={() => setIsCameraActive(false)} className="btn btn-secondary" disabled={isCapturing}>إغلاق الكاميرا</button>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="camera-placeholder-card">
-                  <button onClick={startCamera} className="btn btn-success btn-large">🔓 فتح نظام الكاميرا والمعايرة الذكية</button>
-                </div>
-              )}
-            </div>
-
-            {!galleryEvaluation.passed && (
-              <div className="evaluation-alert-box danger-zone">
-                <h4>{galleryEvaluation.msg}</h4>
-                <button onClick={startCaptureSequence} className="btn btn-primary" style={{ marginTop: '12px' }}>🔄 إعادة محاولة التقاط الـ 50 صورة الآن</button>
+            {/* التبويب الجانبي العائم للدكتور */}
+            {currentUser?.role === 'doctor' && (
+              <div className="doctor-sidebar-tab">
+                <button 
+                  onClick={() => setShowDoctorPanel(!showDoctorPanel)} 
+                  className={`btn-sidebar ${showDoctorPanel ? 'active' : ''}`}
+                >
+                  {showDoctorPanel ? "📷 العودة لنظام الكاميرا" : "📊 فتح لوحة تحكم الدكتور"}
+                </button>
               </div>
             )}
 
-            {capturedImages.length > 0 && (
-              <div className="gallery-section">
-                <div className="gallery-header">
-                  <div>
-                    <h3>📦 عينات المجلد المستهدف: <span className="folder-highlight">{getFullFolderName()}</span></h3>
-                    <p>إجمالي الصور الملتقطة حتى الآن: <strong style={{ color: '#a855f7' }}>{capturedImages.length} / 50</strong> صُورة</p>
-                    {galleryEvaluation.passed && <p className="evaluation-success-text">{galleryEvaluation.msg}</p>}
-                  </div>
-                  <button onClick={uploadToCloudinary} className="btn btn-cloud-upload" disabled={isUploading || !galleryEvaluation.passed}>
-                    {isUploading ? `🔄 جاري الرفع للسحابة (${uploadProgress}/50)...` : "☁️ رَفْع البيانات المستخرجة للسحابة"}
-                  </button>
+            {showDoctorPanel && currentUser?.role === 'doctor' ? (
+              <div className="doctor-custom-dashboard">
+                <div className="dashboard-header-row">
+                  <h2>📊 لوحة مراقبة وإحصائيات الطلاب</h2>
+                  <p>مرحباً د. {firstName} | الطلاب المطابقين للفحص الحالي: <strong>{filteredStudents.length} من {mockStudentsDatabase.length} طالب</strong></p>
                 </div>
 
-                <div className="gallery-container-scroll">
-                  <div className="gallery-grid-fixed">
-                    {capturedImages.map((img, index) => (
-                      <div key={index} className="enhanced-gallery-item">
-                        <div className="img-frame">
-                          <img src={img.src} alt={`captured-idx-${index}`} />
-                        </div>
-                        <span className="gallery-tag-fixed">{img.arabicLabel} ({index + 1})</span>
-                      </div>
-                    ))}
+                {/* 🌟 شريط الفلاتر الجديد */}
+                <div className="dashboard-filters-bar">
+                  <div className="filter-item">
+                    <label>📅 تصفية بالسنة الدراسية:</label>
+                    <select value={filterYear} onChange={(e) => setFilterYear(e.target.value)}>
+                      <option value="All">كل السنوات الدراسية</option>
+                      <option value="One">الفرقة الأولى</option>
+                      <option value="Two">الفرقة الثانية</option>
+                      <option value="Three">الفرقة الثالثة</option>
+                      <option value="Four">الفرقة الرابعة</option>
+                    </select>
+                  </div>
+
+                  <div className="filter-item">
+                    <label>🧬 تصفية بالمسار الأكاديمي:</label>
+                    <select value={filterTrack} onChange={(e) => setFilterTrack(e.target.value)}>
+                      <option value="All">كل المسارات</option>
+                      <option value="General">عام (General)</option>
+                      <option value="Bio">بايو (Bioinformatics)</option>
+                    </select>
                   </div>
                 </div>
+
+                {/* جدول استعراض بيانات الطلاب المصفى */}
+                <div className="table-responsive-wrapper">
+                  <table className="students-stats-table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>اسم الطالب</th>
+                        <th>الرقم القومي</th>
+                        <th>الفرقة الدراسية (الصف)</th>
+                        <th>المسار الأكاديمي (الفئة)</th>
+                        <th>حالة النظام / الوقت</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredStudents.length > 0 ? (
+                        filteredStudents.map((student, index) => (
+                          <tr key={student.nationalId}>
+                            <td>{index + 1}</td>
+                            <td className="student-name-cell">{`${student.firstName} ${student.secondName} ${student.lastName}`}</td>
+                            <td className="national-id-cell">{student.nationalId}</td>
+                            <td>
+                              <span className={`badge-year ${student.academicYear}`}>
+                                {student.academicYear === 'One' ? 'الفرقة الأولى' :
+                                 student.academicYear === 'Two' ? 'الفرقة الثانية' :
+                                 student.academicYear === 'Three' ? 'الفرقة الثالثة' : 'الفرقة الرابعة'}
+                              </span>
+                            </td>
+                            <td>
+                              <span className={`badge-track ${student.track}`}>
+                                {student.track === 'Bio' ? '🧬 بايو' : '💻 عام'}
+                              </span>
+                            </td>
+                            <td>
+                              <span className="status-timestamp-badge">🕒 تم التحقق</span>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="6" style={{ textAlign: 'center', padding: '30px', color: '#94a3b8' }}>
+                            🔍 لا توجد نتائج تطابق خيارات التصفية المحددة!
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
+            ) : (
+              /* الواجهة الطبيعية العادية لجمع العينات */
+              <>
+                <DashboardInfo 
+                  currentUser={currentUser}
+                  firstName={firstName}
+                  secondName={secondName}
+                  lastName={lastName}
+                  academicYear={academicYear}
+                  track={track}
+                  handleLogout={handleLogout}
+                />
+
+                <CameraView 
+                  modelLoading={modelLoading}
+                  isCameraActive={isCameraActive}
+                  setIsCameraActive={setIsCameraActive}
+                  webcamRef={webcamRef}
+                  isCapturing={isCapturing}
+                  currentStage={currentStage}
+                  countdown={countdown}
+                  warningMessage={warningMessage}
+                  startCaptureSequence={startCaptureSequence}
+                  startCamera={startCamera}
+                />
+
+                <ImageGallery 
+                  capturedImages={capturedImages}
+                  galleryEvaluation={galleryEvaluation}
+                  getFullFolderName={getFullFolderName}
+                  uploadToCloudinary={uploadToCloudinary}
+                  isUploading={isUploading}
+                  uploadProgress={uploadProgress}
+                  startCaptureSequence={startCaptureSequence}
+                />
+              </>
             )}
           </>
         )}
-
-        <div className="team-footer">
-          <div className="team-image-wrapper">
-            <img src={teamImage} alt="Airontic Team Work" className="team-img" />
-          </div>
-          <p className="team-text">Airontic Team © 2026</p>
-        </div>
 
       </div>
     </div>

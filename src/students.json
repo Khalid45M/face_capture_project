@@ -1,0 +1,494 @@
+{
+    "mockStudentsDatabase": [
+        {
+            "nationalId": "29901011501234",
+            "password": "pass_doctor_1",
+            "firstName": "أحمد",
+            "secondName": "محمد",
+            "lastName": "علي",
+            "role": "doctor"
+        },
+        {
+            "nationalId": "29502021505678",
+            "password": "pass_doctor_2",
+            "firstName": "محمود",
+            "secondName": "عبد الله",
+            "lastName": "إبراهيم",
+            "role": "doctor"
+        },
+        {
+            "nationalId": "29103031509012",
+            "password": "pass_doctor_3",
+            "firstName": "مصطفى",
+            "secondName": "شريف",
+            "lastName": "حسن",
+            "role": "doctor"
+        },
+        {
+            "nationalId": "28804041503456",
+            "password": "pass_doctor_4",
+            "firstName": "خالد",
+            "secondName": "حسين",
+            "lastName": "محمود",
+            "role": "doctor"
+        },
+        {
+            "nationalId": "29305051507890",
+            "password": "pass_doctor_5",
+            "firstName": "طارق",
+            "secondName": "أحمد",
+            "lastName": "سعيد",
+            "role": "doctor"
+        },
+        {
+            "nationalId": "30301121500011",
+            "password": "student_pass_1",
+            "firstName": "كريم",
+            "secondName": "عمرو",
+            "lastName": "يوسف",
+            "role": "student",
+            "academicYear": "One",
+            "track": "General"
+        },
+        {
+            "nationalId": "30402151500022",
+            "password": "student_pass_2",
+            "firstName": "يوسف",
+            "secondName": "هاني",
+            "lastName": "خليل",
+            "role": "student",
+            "academicYear": "One",
+            "track": "General"
+        },
+        {
+            "nationalId": "30303181500033",
+            "password": "student_pass_3",
+            "firstName": "أحمد",
+            "secondName": "سيد",
+            "lastName": "كمال",
+            "role": "student",
+            "academicYear": "One",
+            "track": "General"
+        },
+        {
+            "nationalId": "30404221500044",
+            "password": "student_pass_4",
+            "firstName": "محمد",
+            "secondName": "إيهاب",
+            "lastName": "فتحي",
+            "role": "student",
+            "academicYear": "One",
+            "track": "General"
+        },
+        {
+            "nationalId": "30305251500055",
+            "password": "student_pass_5",
+            "firstName": "عمر",
+            "secondName": "ممدوح",
+            "lastName": "شاكر",
+            "role": "student",
+            "academicYear": "One",
+            "track": "General"
+        },
+        {
+            "nationalId": "30406281500066",
+            "password": "student_pass_6",
+            "firstName": "علي",
+            "secondName": "حسام",
+            "lastName": "سالم",
+            "role": "student",
+            "academicYear": "One",
+            "track": "General"
+        },
+        {
+            "nationalId": "30307111500077",
+            "password": "student_pass_7",
+            "firstName": "مصطفى",
+            "secondName": "مجدي",
+            "lastName": "رمضان",
+            "role": "student",
+            "academicYear": "One",
+            "track": "General"
+        },
+        {
+            "nationalId": "30408141500088",
+            "password": "student_pass_8",
+            "firstName": "خالد",
+            "secondName": "أيمن",
+            "lastName": "ناجي",
+            "role": "student",
+            "academicYear": "One",
+            "track": "General"
+        },
+        {
+            "nationalId": "30309171500099",
+            "password": "student_pass_9",
+            "firstName": "طارق",
+            "secondName": "وائل",
+            "lastName": "عيسى",
+            "role": "student",
+            "academicYear": "One",
+            "track": "General"
+        },
+        {
+            "nationalId": "30410211500110",
+            "password": "student_pass_10",
+            "firstName": "زياد",
+            "secondName": "سامح",
+            "lastName": "سعد",
+            "role": "student",
+            "academicYear": "One",
+            "track": "General"
+        },
+        {
+            "nationalId": "30201121500121",
+            "password": "student_pass_11",
+            "firstName": "عبد الرحمن",
+            "secondName": "عادل",
+            "lastName": "فرج",
+            "role": "student",
+            "academicYear": "Two",
+            "track": "General"
+        },
+        {
+            "nationalId": "30202151500132",
+            "password": "student_pass_12",
+            "firstName": "حسين",
+            "secondName": "بهاء",
+            "lastName": "فوزي",
+            "role": "student",
+            "academicYear": "Two",
+            "track": "General"
+        },
+        {
+            "nationalId": "30203181500143",
+            "password": "student_pass_13",
+            "firstName": "عمرو",
+            "secondName": "جلال",
+            "lastName": "صلاح",
+            "role": "student",
+            "academicYear": "Two",
+            "track": "General"
+        },
+        {
+            "nationalId": "30204221500154",
+            "password": "student_pass_14",
+            "firstName": "هاني",
+            "secondName": "عصام",
+            "lastName": "راضي",
+            "role": "student",
+            "academicYear": "Two",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30205251500165",
+            "password": "student_pass_15",
+            "firstName": "مروان",
+            "secondName": "أشرف",
+            "lastName": "عزمي",
+            "role": "student",
+            "academicYear": "Two",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30206281500176",
+            "password": "student_pass_16",
+            "firstName": "باسل",
+            "secondName": "نادر",
+            "lastName": "شوقي",
+            "role": "student",
+            "academicYear": "Two",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30207111500187",
+            "password": "student_pass_17",
+            "firstName": "شريف",
+            "secondName": "مدحت",
+            "lastName": "حمدي",
+            "role": "student",
+            "academicYear": "Two",
+            "track": "General"
+        },
+        {
+            "nationalId": "30208141500198",
+            "password": "student_pass_18",
+            "firstName": "رامي",
+            "secondName": "صفوت",
+            "lastName": "منير",
+            "role": "student",
+            "academicYear": "Two",
+            "track": "General"
+        },
+        {
+            "nationalId": "30209171500210",
+            "password": "student_pass_19",
+            "firstName": "حاتم",
+            "secondName": "نبيل",
+            "lastName": "رشدي",
+            "role": "student",
+            "academicYear": "Two",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30210211500221",
+            "password": "student_pass_20",
+            "firstName": "ياسين",
+            "secondName": "تامر",
+            "lastName": "رفعت",
+            "role": "student",
+            "academicYear": "Two",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30101121500232",
+            "password": "student_pass_21",
+            "firstName": "هيثم",
+            "secondName": "سمير",
+            "lastName": "مراد",
+            "role": "student",
+            "academicYear": "Three",
+            "track": "General"
+        },
+        {
+            "nationalId": "30102151500243",
+            "password": "student_pass_22",
+            "firstName": "ماجد",
+            "secondName": "رأفت",
+            "lastName": "عوض",
+            "role": "student",
+            "academicYear": "Three",
+            "track": "General"
+        },
+        {
+            "nationalId": "30103181500254",
+            "password": "student_pass_23",
+            "firstName": "أشرف",
+            "secondName": "سليمان",
+            "lastName": "فاروق",
+            "role": "student",
+            "academicYear": "Three",
+            "track": "General"
+        },
+        {
+            "nationalId": "30104221500265",
+            "password": "student_pass_24",
+            "firstName": "إيهاب",
+            "secondName": "وجدي",
+            "lastName": "ياسين",
+            "role": "student",
+            "academicYear": "Three",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30105251500276",
+            "password": "student_pass_25",
+            "firstName": "أيمن",
+            "secondName": "طلعت",
+            "lastName": "راضي",
+            "role": "student",
+            "academicYear": "Three",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30106281500287",
+            "password": "student_pass_26",
+            "firstName": "عصام",
+            "secondName": "مفيد",
+            "lastName": "حامد",
+            "role": "student",
+            "academicYear": "Three",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30107111500298",
+            "password": "student_pass_27",
+            "firstName": "سعيد",
+            "secondName": "مكرم",
+            "lastName": "توفيق",
+            "role": "student",
+            "academicYear": "Three",
+            "track": "General"
+        },
+        {
+            "nationalId": "30108141500310",
+            "password": "student_pass_28",
+            "firstName": "بهاء",
+            "secondName": "علاء",
+            "lastName": "نصر",
+            "role": "student",
+            "academicYear": "Three",
+            "track": "General"
+        },
+        {
+            "nationalId": "30109171500321",
+            "password": "student_pass_29",
+            "firstName": "مجدي",
+            "secondName": "طارق",
+            "lastName": "كامل",
+            "role": "student",
+            "academicYear": "Three",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30110211500332",
+            "password": "student_pass_30",
+            "firstName": "سامح",
+            "secondName": "راضي",
+            "lastName": "جلال",
+            "role": "student",
+            "academicYear": "Three",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30001121500343",
+            "password": "student_pass_31",
+            "firstName": "خالد",
+            "secondName": "منصور",
+            "lastName": "بدير",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "General"
+        },
+        {
+            "nationalId": "30002151500354",
+            "password": "student_pass_32",
+            "firstName": "سامي",
+            "secondName": "مسعد",
+            "lastName": "الفيومي",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "General"
+        },
+        {
+            "nationalId": "30003181500365",
+            "password": "student_pass_33",
+            "firstName": "يحيى",
+            "secondName": "صابر",
+            "lastName": "الجبالي",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "General"
+        },
+        {
+            "nationalId": "30004221500376",
+            "password": "student_pass_34",
+            "firstName": "صلاح",
+            "secondName": "عاطف",
+            "lastName": "غنيم",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30005251500387",
+            "password": "student_pass_35",
+            "firstName": "نادر",
+            "secondName": "فتحي",
+            "lastName": "عكاشة",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30006281500398",
+            "password": "student_pass_36",
+            "firstName": "باسم",
+            "secondName": "نشأت",
+            "lastName": "الهواري",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30007111500410",
+            "password": "student_pass_37",
+            "firstName": "مدحت",
+            "secondName": "خيري",
+            "lastName": "السويفي",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "General"
+        },
+        {
+            "nationalId": "30008141500421",
+            "password": "student_pass_38",
+            "firstName": "وائل",
+            "secondName": "ناجح",
+            "lastName": "الشاذلي",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "General"
+        },
+        {
+            "nationalId": "30009171500432",
+            "password": "student_pass_39",
+            "firstName": "حسن",
+            "secondName": "فاروق",
+            "lastName": "المنشاوي",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30010211500443",
+            "password": "student_pass_40",
+            "firstName": "شادي",
+            "secondName": "محروس",
+            "lastName": "عمران",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30011251500454",
+            "password": "student_pass_41",
+            "firstName": "تامر",
+            "secondName": "حمدان",
+            "lastName": "عيسوي",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "General"
+        },
+        {
+            "nationalId": "30012281500465",
+            "password": "student_pass_42",
+            "firstName": "فادي",
+            "secondName": "مكرم",
+            "lastName": "الباز",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30001021500476",
+            "password": "student_pass_43",
+            "firstName": "شريف",
+            "secondName": "رشاد",
+            "lastName": "المهدي",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "General"
+        },
+        {
+            "nationalId": "30002051500487",
+            "password": "student_pass_44",
+            "firstName": "مصطفى",
+            "secondName": "جودة",
+            "lastName": "الخطيب",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "Bio"
+        },
+        {
+            "nationalId": "30003081500498",
+            "password": "student_pass_45",
+            "firstName": "أمجد",
+            "secondName": "نشأت",
+            "lastName": "الجمال",
+            "role": "student",
+            "academicYear": "Four",
+            "track": "General"
+        }
+    ]
+}
